@@ -199,16 +199,16 @@ def visualize():
         iteration += 1
         fitnessHistoryMax[iteration] = max(ft.values())
 
-    # min fitness
-    fitnessHistoryMin = {}
-    iteration = 0
-    for ft in fitnessHistory.values():
-        iteration += 1
-        fitnessHistoryMin[iteration] = min(ft.values())
+    # # min fitness
+    # fitnessHistoryMin = {}
+    # iteration = 0
+    # for ft in fitnessHistory.values():
+    #     iteration += 1
+    #     fitnessHistoryMin[iteration] = min(ft.values())
 
     plt.plot(fitnessHistoryMean.values(), label='Mean Fitness')
     plt.plot(fitnessHistoryMax.values(), label='Max Fitness')
-    plt.plot(fitnessHistoryMin.values(), label='Min Fitness')
+    # plt.plot(fitnessHistoryMin.values(), label='Min Fitness')
     plt.legend()
     plt.title('Fitness through the generations')
     plt.xlabel('Generations')
