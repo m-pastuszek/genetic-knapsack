@@ -178,7 +178,7 @@ def evolve_population(pop, generation):
         print("Error: Survival Selection Type")
 
     # Elitism
-    # fitnessEvaluate(population, )
+    fitnessEvaluate(population, generation)
     if (elitism and (forElitism not in population)):
         minFitnessIndex = sorted(popAndFitness.items(), key=lambda kv: kv[1])[0][0]
         population[minFitnessIndex] = forElitism
@@ -192,14 +192,23 @@ def visualize():
         iteration += 1
         fitnessHistoryMean[iteration] = sum(ft.values()) / len(ft)
 
+    # max fitness
     fitnessHistoryMax = {}
     iteration = 0
     for ft in fitnessHistory.values():
         iteration += 1
         fitnessHistoryMax[iteration] = max(ft.values())
 
+    # min fitness
+    fitnessHistoryMin = {}
+    iteration = 0
+    for ft in fitnessHistory.values():
+        iteration += 1
+        fitnessHistoryMin[iteration] = min(ft.values())
+
     plt.plot(fitnessHistoryMean.values(), label='Mean Fitness')
     plt.plot(fitnessHistoryMax.values(), label='Max Fitness')
+    plt.plot(fitnessHistoryMin.values(), label='Min Fitness')
     plt.legend()
     plt.title('Fitness through the generations')
     plt.xlabel('Generations')
