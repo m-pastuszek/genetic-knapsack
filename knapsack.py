@@ -41,7 +41,11 @@ print('\nSurvival Selection\n---------------------------')
 print('(1) Age-based Selection')
 print('(2) Fitness-based Selection')
 survivalSelection = int(input('Which one? '))
-elitism = bool(input('Elitism? (Y or N) '))
+elitismInput = input('Elitism? (Y or N) ')
+if (elitismInput == 'Y'):
+    elitism = True
+else:
+    elitism = False
 
 print('\n----------------------------------------------------------')
 print('initializing population')
@@ -209,6 +213,7 @@ def visualize():
     plt.plot(fitnessHistoryMean.values(), label='Mean Fitness')
     plt.plot(fitnessHistoryMax.values(), label='Max Fitness')
     plt.plot(fitnessHistoryMin.values(), label='Min Fitness')
+    plt.xticks(range(generationsNumber))
     plt.legend()
     plt.title('Fitness through the generations')
     plt.xlabel('Generations')
@@ -244,6 +249,8 @@ if parentSelection == 2:
 
 outFile.write('Crossover Points: {}\n'.format(str(numberOfCrossoverPoints)))
 outFile.write('Mutation Probability: {}\n'.format(str(mutProb)))
+outFile.write('Survival selection: {}\n'.format(str(survivalSelection)))
+outFile.write('Elitism: {}\n'.format(str(elitism)))
 visualize()
 outFile.close()
 
