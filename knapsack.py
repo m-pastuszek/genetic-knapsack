@@ -29,10 +29,10 @@ print('(1) Roulette-wheel Selection')
 print('(2) K-Tournament Selection')
 parentSelection = int(input('Which one? '))
 if parentSelection == 2:
-    k = int(input('k=? (between 1 and ' + str(populationSize) + ') '))
+    kTournamentNumberOf = int(input('k=? (between 1 and ' + str(populationSize) + ') '))
 
 print('\nN-point Crossover\n---------------------------')
-n = int(input('n=? (between 1 and ' + str(populationSize - 1) + ') '))
+numberOfCrossoverPoints = int(input('n=? (between 1 and ' + str(populationSize - 1) + ') '))
 
 print('\nMutation Probability\n---------------------------')
 mutProb = float(input('prob=? (between 0 and 1) '))
@@ -114,7 +114,7 @@ def evolve_population(pop, generation):
             while j < 2:
                 c = 0
                 tournamentDict = {}
-                while c < k:
+                while c < kTournamentNumberOf:
                     index = random.randint(0, len(pop) - 1)
                     if index in tournamentDict.keys():
                         pass
@@ -138,7 +138,7 @@ def evolve_population(pop, generation):
     # Crossover
     childs = []
     reverse = False
-    mod = (len(weights) // (n + 1)) + 1
+    mod = (len(weights) // (numberOfCrossoverPoints + 1)) + 1
     for j in range(0, len(population)):
         child = []
         for i in range(0, len(male[j])):
@@ -199,21 +199,26 @@ def visualize():
         iteration += 1
         fitnessHistoryMax[iteration] = max(ft.values())
 
-    # # min fitness
-    # fitnessHistoryMin = {}
-    # iteration = 0
-    # for ft in fitnessHistory.values():
-    #     iteration += 1
-    #     fitnessHistoryMin[iteration] = min(ft.values())
+    # min fitness
+    fitnessHistoryMin = {}
+    iteration = 0
+    for ft in fitnessHistory.values():
+        iteration += 1
+        fitnessHistoryMin[iteration] = min(ft.values())
 
     plt.plot(fitnessHistoryMean.values(), label='Mean Fitness')
     plt.plot(fitnessHistoryMax.values(), label='Max Fitness')
-    # plt.plot(fitnessHistoryMin.values(), label='Min Fitness')
+    plt.plot(fitnessHistoryMin.values(), label='Min Fitness')
     plt.legend()
     plt.title('Fitness through the generations')
     plt.xlabel('Generations')
     plt.ylabel('Fitness')
     plt.show()
+
+    outFile.write('### FITNESS ###\n')
+    outFile.write('Mean Fitness: {}\n'.format(str(fitnessHistoryMean.values())))
+    outFile.write('Max Fitness: {}\n'.format(str(fitnessHistoryMax.values())))
+    outFile.write('Min Fitness: {}\n'.format(str(fitnessHistoryMin.values())))
 
 
 for generation in range(generationsNumber):
@@ -225,8 +230,20 @@ elit = population[index]
 elit = "".join(str(x) for x in elit)
 weight = popAndWeight[index]
 fitness = popAndFitness[index]
+
+outFile.write('Chromosome: {}\n'.format(elit))
+outFile.write('Weight: {}\n'.format(str(weight)))
+outFile.write('Value: {}\n'.format(str(fitness)))
+outFile.write('### INPUT PARAMETERS ###\n')
+outFile.write('Population size: {}\n'.format(str(populationSize)))
+outFile.write('Generations number: {}\n'.format(str(generationsNumber)))
+outFile.write('Parent selection: {}\n'.format(str(parentSelection)))
+if parentSelection == 2:
+    outFile.write('Number of k-Tournament: {}\n'
+              .format(str(kTournamentNumberOf if kTournamentNumberOf else 'n/d')))
+
+outFile.write('Crossover Points: {}\n'.format(str(numberOfCrossoverPoints)))
+outFile.write('Mutation Probability: {}\n'.format(str(mutProb)))
 visualize()
-outFile.write('chromosome: {}\n'.format(elit))
-outFile.write('weight: {}\n'.format(str(weight)))
-outFile.write('value: {}'.format(str(fitness)))
 outFile.close()
+
